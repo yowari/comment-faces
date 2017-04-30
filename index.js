@@ -10,7 +10,7 @@ const config = {
 const interpreter = new Interpreter();
 
 client.on('ready', () => {
-  console.log('Comment faces ready');
+  console.log('comment-faces bot ready');
 });
 
 client.on('message', message => {

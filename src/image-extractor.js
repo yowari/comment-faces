@@ -1,5 +1,6 @@
 var system = require('system');
 var webPage = require('webpage');
+var fs = require('fs');
 
 var args = system.args;
 
@@ -15,27 +16,39 @@ if (args.length <= 1) {
 
 var faceCode = args[1];
 
+function retriveImageData(code) {
+  var elt = document.querySelector('.md [href="#' + code + '"]');
+  var eltStyle = window.getComputedStyle(elt);
+
+  return {
+    backgroundImage: eltStyle.getPropertyValue('background-image'),
+    backgroundPositionX: eltStyle.getPropertyValue('background-position-x'),
+    backgroundPositionY: eltStyle.getPropertyValue('background-position-y'),
+    width: eltStyle.getPropertyValue('width'),
+    height: eltStyle.getPropertyValue('height'),
+  };
+}
+
+function parseImageData(imgData) {
+  return {
+    filePath: /url\((.*)\)/.exec(imgData.backgroundImage)[1],
+    x: parseFloat(/(.*)px/.exec(imgData.backgroundPositionX)[1]) * -1,
+    y: parseFloat(/(.*)px/.exec(imgData.backgroundPositionY)[1]) * -1,
+    width: parseFloat(/(.*)px/.exec(imgData.width)[1]),
+    height: parseFloat(/(.*)px/.exec(imgData.height)[1]),
+  };
+}
+
 page.open('https://www.reddit.com/r/anime/wiki/commentfaces', function(status) {
   if (status !== 'success') {
-    console.log('Unable to load the address!');
+    console.error('Unable to load the address!');
     phantom.exit();
   }
 
-  var img = page.evaluate(function (code) {
-    var selector = '.md [href="#' + code + '"]';
-    return document.querySelector(selector).getBoundingClientRect();
-  }, faceCode);
+  var imgData = page.evaluate(retriveImageData, faceCode);
+  var img = parseImageData(imgData);
 
-  if (img != null) {
-    page.clipRect = {
-        top: img.top - 22825,
-        left: img.left,
-        width: img.width,
-        height: img.height
-    };
-
-    page.render('faces/' + faceCode + '.png');
-  }
+  fs.write('faces-formats/' + faceCode + '.json', JSON.stringify(img), 'w');
 
   phantom.exit();
 });

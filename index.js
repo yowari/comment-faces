@@ -1,20 +1,20 @@
 const Discord = require('discord.js');
+
+const config = require('./config.json');
 const Interpreter = require('./src/interpreter.js');
 
-const client = new Discord.Client();
-
-const config = {
-  token: "MzA3MjQ0OTcwNDUxMDA5NTM4.C-PgcQ._cGEu1hEUR_Kl2Njdp1MgfTA6C0",
-};
+const bot = new Discord.Client();
 
 const interpreter = new Interpreter();
+interpreter.loadCommands();
 
-client.on('ready', () => {
+bot.on('ready', () => {
+  bot.user.setGame(`${config.prefix}help to display informations`);
   console.log('comment-faces bot ready');
 });
 
-client.on('message', message => {
+bot.on('message', message => {
   interpreter.read(message);
 });
 
-client.login(config.token);
+bot.login(config.token);

@@ -1,59 +1,91 @@
 const path = require('path');
+const fs = require('fs');
 const childProcess = require('child_process');
 const phantomjs = require('phantomjs-prebuilt');
 const Jimp = require('jimp');
 
+const config = require('../config.json');
+
 class Interpreter {
 
-  read (message) {
-    let parseResult = /\[(.*)\]\(#([a-zA-Z_-]+)(?:\s"(.*)")?\)/.exec(message.content);
+  constructor () {
+    this.commands = {};
+  }
 
-    if (parseResult != null) {
-      let [, textOnTop, faceCode, hoverText] = parseResult;
+  loadCommands () {
+    const CommandClass = require('./commands/help');
+    let cmd = new CommandClass();
+    this.commands[cmd.name] = cmd;
+  }
 
-      let phantomjsArgs = [
-        path.join(__dirname, 'image-extractor.js'),
-        faceCode,
-      ];
+  read (msg) {
+    if (msg.content.startsWith(config.prefix)) {
+      const args = msg.content.slice(config.prefix.length).split(' ');
+      const command = args.shift();
 
-      let imageExtractor = childProcess.execFile(phantomjs.path, phantomjsArgs, function(error, stdout, stderr) {
-        if (error) {
-          console.error(`exec error: ${error}`);
-          return;
-        }
+      if (command && command in this.commands) {
+        this.commands[command].execute(msg, args);
+      } else {
+        msg.reply('Command not found :frowning2:');
+      }
+    } else {
+      const faceCheck = /\[(.*)\]\(#([a-zA-Z0-9_-]+)(?:\s"(.*)")?\)/;
 
-        if (stdout)
-          console.log(`stdout: ${stdout}`);
+      if (faceCheck.test(msg.content)) {
+        let [, textOnTop, faceCode, hoverText] = faceCheck.exec(msg.content);
 
-        if (stderr)
-          console.error(`stderr: ${stderr}`);
-      });
+        let phantomjsArgs = [
+          path.join(__dirname, 'phantomjs/image-extractor.js'),
+          faceCode,
+        ];
 
-      imageExtractor.on('exit', function() {
-        let imgData = require(`../faces-formats/${faceCode}.json`);
+        let imageExtractor = childProcess.execFile(phantomjs.path, phantomjsArgs, printError);
 
-        Jimp.read(imgData.filePath)
-          .then(function (image) {
-            image.crop(
-              imgData.x,
-              imgData.y,
-              imgData.width,
-              imgData.height
-            ).write(`faces/${faceCode}.png`, function (err) {
-                if (err) {
-                  console.error(err);
-                  return;
-                }
+        imageExtractor.on('exit', function() {
+          try {
+            let imgData = require(`../${config.faceDataFolder}/${faceCode}.json`);
 
-                message.channel.sendFile(`faces/${faceCode}.png`, `${faceCode}.png`);
-              });
-            }).catch(function (err) {
-              console.error(err);
-            });
-      });
+            if (!fs.existsSync(config.faceFolder)) {
+              fs.mkdirSync(config.faceFolder);
+            }
+
+            Jimp.read(imgData.filePath)
+              .then(function (image) {
+                image.crop(
+                  imgData.x,
+                  imgData.y,
+                  imgData.width,
+                  imgData.height
+                ).write(`${config.faceFolder}/${faceCode}.png`, function (err) {
+                    if (err) {
+                      console.error(err);
+                      return;
+                    }
+
+                    msg.channel.sendFile(`${config.faceFolder}/${faceCode}.png`, `${faceCode}.png`);
+                  });
+                }).catch(console.error);
+          } catch (e) {
+            console.error(e);
+          }
+        });
+      }
     }
   }
 
+}
+
+function printError(error, stdout, stderr) {
+  if (error) {
+    console.error(`exec error: ${error}`);
+    return;
+  }
+
+  if (stdout)
+    console.log(`stdout: ${stdout}`);
+
+  if (stderr)
+    console.error(`stderr: ${stderr}`);
 }
 
 module.exports = Interpreter;

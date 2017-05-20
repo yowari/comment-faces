@@ -46,6 +46,7 @@ function parse(msg) {
   let [, textOnTop, faceCode, hoverText] = faceCodeExpr;
 
   let phantomjsArgs = [
+    '--web-security=no',
     path.join(__dirname, 'phantomjs/image-extractor.js'),
     faceCode,
   ];

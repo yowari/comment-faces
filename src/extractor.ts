@@ -1,10 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as phantom from 'phantom';
-import Jimp = require('jimp');
 // TypeScript Definition error when using Gm() and gm.in() in lines 125 and 128
-//import * as Gm from 'gm';
-const Gm = require('gm');
+import * as Gm from 'gm';
+//const Gm = require('gm');
 
 class ImageExtractor {
 
@@ -63,113 +62,87 @@ class ImageSaver {
       fs.mkdirSync(filedir);
     }
 
-    if (typeof imgMeta.animation === 'undefined') {
-      return this.saveStatic(imgMeta, filedir, filename);
-    }
-    else {
-      return this.saveAnimated(imgMeta, filedir, filename);
-    }
-  }
-
-  saveStatic(imgMeta: ImageMeta, filedir: string, filename: string): Promise<string> {
-    const file = path.join(filedir, `${filename}.png`);
+    let file = path.join(filedir, `${filename}`);
+    let image;
 
     return new Promise<string>((resolve, reject) => {
-      Jimp.read(imgMeta.filePath)
-        .then(function (image) {
-          image.crop(
-            imgMeta.x,
-            imgMeta.y,
-            imgMeta.width,
-            imgMeta.height
-          ).write(file, function (err) {
-            if (err) {
-              reject(err);
-            }
-            else {
-              resolve(file);
-            }
-          });
-        })
-        .catch(err => reject(err));
-    });
-  }
+      if (typeof imgMeta.animation === 'undefined') {
+        file += '.png';
 
-  saveAnimated(imgMeta: ImageMeta, filedir: string, filename: string): Promise<string> {
-    if (typeof imgMeta.animation == 'undefined') {
-      return Promise.reject('Animation data not found');
-    }
-
-    const file = path.join(filedir, filename);
-
-    return Jimp.read(imgMeta.filePath)
-      .then(image => {
-        if (typeof imgMeta.animation == 'undefined') {
-          return Promise.reject('Animation data not found');;
-        }
-
-        let widthStep = (imgMeta.animation.to.x - imgMeta.animation.from.x) / imgMeta.animation.steps;
-        let heightStep = (imgMeta.animation.to.y - imgMeta.animation.from.y) / imgMeta.animation.steps;
-
-        return new Promise(function(resolve, reject) {
-          if (typeof imgMeta.animation == 'undefined') {
-            return Promise.reject('Animation data not found');;
+        image = this.extractImage(imgMeta)
+          .write(file, function (err) {
+          if (err) {
+            reject(err);
           }
 
-          var savedFiles = 0;
-
-          for (let i = 0; i <= imgMeta.animation.steps; i++) {
-            image.clone().crop(
-              imgMeta.animation.from.x + (widthStep * i),
-              imgMeta.animation.from.y + (heightStep * i),
-              imgMeta.width,
-              imgMeta.height
-            ).write(`${file}-${i+1}.png`, function (err) {
-              if (err) {
-                console.error(err);
-                return;
-              }
-
-              savedFiles++;
-
-              if (typeof imgMeta.animation == 'undefined') {
-                return Promise.reject('Animation data not found');;
-              }
-
-              if (savedFiles > imgMeta.animation.steps) {
-                resolve();
-              }
-            });
-          }
+          resolve(file);
         });
-      })
-      .then(() => {
-        if (typeof imgMeta.animation == 'undefined') {
-          return Promise.reject('Animation data not found');;
-        }
+      }
+      else {
+        image = this.extractAnimatedImage(imgMeta, file)
+          .then(image => {
+            file += '.gif';
 
-        let gm = Gm();
-
-        for (let i = 0; i <= imgMeta.animation.steps; i++) {
-          gm = gm.in(`${file}-${i+1}.png`);
-        }
-
-        return new Promise((resolve, reject) => {
-          if (typeof imgMeta.animation == 'undefined') {
-            return Promise.reject('Animation data not found');;
-          }
-
-          gm.delay(imgMeta.animation.duration / (imgMeta.animation.steps + 1))
-            .resize(imgMeta.width, imgMeta.height)
-            .write(`${file}.gif`, function (err: any) {
+            image.write(file, function (err) {
               if (err) {
                 reject(err);
               }
-              
-              resolve(`${file}.gif`);
-            });
-        });
 
+              resolve(file);
+            });
+          });
+      }
+      
+    });
+  }
+
+  extractImage(imgMeta: ImageMeta): Gm.State {
+    return Gm(imgMeta.filePath)
+        .crop(imgMeta.width, imgMeta.height, imgMeta.x, imgMeta.y);
+  }
+
+  extractAnimatedImage(imgMeta: ImageMeta, file: string): Promise<Gm.State> {
+    if (typeof imgMeta.animation == 'undefined') {
+      throw new Error('Animation data not found');
+    }
+
+    const widthStep = (imgMeta.animation.to.x - imgMeta.animation.from.x) / imgMeta.animation.steps;
+    const heightStep = (imgMeta.animation.to.y - imgMeta.animation.from.y) / imgMeta.animation.steps;
+
+    let imgPromises = [];
+
+    for (let i = 0; i <= imgMeta.animation.steps; i++) {
+      imgPromises.push(new Promise<string>((resolve, reject) => {
+        Gm(imgMeta.filePath)
+          .crop(
+            imgMeta.width,
+            imgMeta.height,
+            imgMeta.animation.from.x + (widthStep * i),
+            imgMeta.animation.from.y + (heightStep * i)
+          )
+          .write(`${file}-${i+1}.png`, err => {
+            if (err) {
+              reject(err);
+            }
+
+            resolve(`${file}-${i+1}.png`);
+          });
+      }));
+    }
+
+    return Promise.all(imgPromises)
+      .then(frames => {
+        let gm = Gm(imgMeta.width, imgMeta.height);
+        gm.repage("+");
+
+        for (let frame of frames) {
+          gm = gm.in(frame);
+        }
+
+        gm = gm.delay(imgMeta.animation.duration / (imgMeta.animation.steps + 1));
+        gm = gm.resize(imgMeta.width, imgMeta.height);
+
+        return gm;
       });
   }
 

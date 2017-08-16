@@ -1,13 +1,34 @@
-FROM node:latest
+FROM centos
+
 MAINTAINER yowari
 
-RUN apt-get update -y \
-  && apt-get install -y imagemagick graphicsmagick
+RUN curl --silent --location https://rpm.nodesource.com/setup_7.x | bash - \
+  && yum -y install nodejs gcc-c++ make
 
-COPY . /usr/src/comment-faces
-WORKDIR /usr/src/comment-faces
+RUN yum -y install ImageMagick
+
+RUN yum -y install libpng libjpeg libpng-devel libjpeg-devel ghostscript libtiff libtiff-devel freetype freetype-devel jasper jasper-devel \
+  && yum -y install wget \
+  && cd /usr/src \
+  && wget ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/GraphicsMagick-LATEST.tar.gz \
+  && tar -xzvf GraphicsMagick-LATEST.tar.gz \
+  && cd GraphicsMagick-1.3.25 \
+  && ./configure \
+  && make install
+
+RUN yum -y install bzip2
+
+COPY . /opt/app-root
+WORKDIR /opt/app-root
 
 RUN npm install \
   && npm run compile
+
+RUN chmod -R 777 /opt/app-root \
+  && chown -R 1001:1001 /opt/app-root
+
+USER 1001
+
+EXPOSE 8080
 
 ENTRYPOINT ["npm", "start"]

@@ -1,11 +1,17 @@
-import { Client as DiscordBot } from 'discord.js';
+import { Client } from 'discord.js';
 import { Interpreter } from './src/interpreter';
 import Help from './src/commands/help';
+import Config from './src/common/config';
 
 // TODO: Load .json file in a TypeScript way
-const config = require('../config.json');
+const userConfig = require('../config.json');
+const token: string = process.env.TOKEN;
 
-const bot = new DiscordBot();
+const config: Config = Object.assign({}, userConfig, {
+  token
+});
+
+const bot = new Client();
 const interpreter = new Interpreter(config);
 
 // load commands

@@ -12,7 +12,7 @@ RUN yum -y install libpng libjpeg libpng-devel libjpeg-devel ghostscript libtiff
   && cd /usr/src \
   && wget ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/GraphicsMagick-LATEST.tar.gz \
   && tar -xzvf GraphicsMagick-LATEST.tar.gz \
-  && cd GraphicsMagick-1.3.25 \
+  && cd GraphicsMagick-1.3.26 \
   && ./configure \
   && make install
 

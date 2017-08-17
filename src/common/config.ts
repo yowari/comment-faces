@@ -1,7 +1,7 @@
 interface Config {
   token: string;
   prefix: string;
-  faceFolder: string;
+  tmp: string;
 }
 
 export default Config;

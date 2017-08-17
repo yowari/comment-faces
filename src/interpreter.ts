@@ -11,7 +11,7 @@ class Interpreter {
   constructor(public config: Config) {
     this.commands = {};
     this.parser = new Parser();
-    this.extractor = new ImageExtractor(config.faceFolder);
+    this.extractor = new ImageExtractor(config.tmp);
   }
 
   read(msg: Message): void {

@@ -12,7 +12,7 @@ class Help implements Command {
         fields: [
           {
             name: 'Comment faces r/animes wiki page',
-            value: '[https://www.reddit.com/r/anime/wiki/commentfaces](https://www.youtube.com/watch?v=adIf62qRoVU)',
+            value: '[https://www.reddit.com/r/anime/wiki/commentfaces](https://www.youtube.com/watch?v=mLUjwZBPzR0)',
           },
           {
             name: 'How to (copied from r/animes wiki page)',
@@ -26,7 +26,7 @@ class Help implements Command {
           }
         ],
         footer: {
-          text: '© 2017 | made with ♥️ by yowari'
+          text: '2017 | made with ♥️ by yowari'
         }
       }
     });

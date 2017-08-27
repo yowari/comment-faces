@@ -19,7 +19,12 @@ interpreter.commands['help'] = new Help();
 
 bot.on('ready', () => {
   // set bot status message
-  bot.user.setGame(`${config.prefix}help to display informations`);
+  bot.user.setPresence({
+    game: {
+      name: `${config.prefix}help`,
+      type: 0
+    }
+  });
 
   // MY BOTY IS READY
   console.log('comment-faces bot ready');

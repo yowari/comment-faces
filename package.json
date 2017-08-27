@@ -12,14 +12,14 @@
   "author": "yowari",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.0.0",
+    "discord.js": "^11.1.0",
     "gm": "^1.23.0",
-    "phantom": "^4.0.4"
+    "phantom": "^4.0.5"
   },
   "devDependencies": {
-    "@types/gm": "^1.17.31",
-    "@types/node": "^7.0.29",
-    "@types/phantom": "^3.2.1",
-    "typescript": "^2.3.4"
+    "@types/gm": "^1.17.32",
+    "@types/node": "^7.0.43",
+    "@types/phantom": "^3.2.3",
+    "typescript": "^2.5.1"
   }
 }

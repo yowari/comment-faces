@@ -10,9 +10,9 @@ RUN yum -y install ImageMagick
 RUN yum -y install libpng libjpeg libpng-devel libjpeg-devel ghostscript libtiff libtiff-devel freetype freetype-devel jasper jasper-devel \
   && yum -y install wget \
   && cd /usr/src \
-  && wget ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/GraphicsMagick-LATEST.tar.gz \
-  && tar -xzvf GraphicsMagick-LATEST.tar.gz \
-  && cd GraphicsMagick-1.3.26 \
+  && wget ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/1.3/GraphicsMagick-1.3.28.tar.gz \
+  && tar -xzvf GraphicsMagick-1.3.28.tar.gz \
+  && cd GraphicsMagick-1.3.28 \
   && ./configure \
   && make install
 

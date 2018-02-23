@@ -1,28 +1,21 @@
 import { Client } from 'discord.js';
-import { Interpreter } from './src/interpreter';
-import Help from './src/commands/help';
-import Config from './src/common/config';
+import { Interpreter, CommandInterpreter, CommentFaceInterpreter } from './src/interpreters';
 
-// TODO: Load .json file in a TypeScript way
-const userConfig = require('../config.json');
-const token: string = process.env.TOKEN;
-
-const config: Config = Object.assign({}, userConfig, {
-  token
-});
+import config from './src/config';
 
 const bot = new Client();
-const interpreter = new Interpreter(config);
 
-// load commands
-interpreter.commands['help'] = new Help();
+// create interpreters
+const interpreters: Interpreter[] = [
+  new CommandInterpreter(config),
+  new CommentFaceInterpreter(config),
+];
 
 bot.on('ready', () => {
   // set bot status message
   bot.user.setPresence({
     game: {
       name: `${config.prefix}help`,
-      type: 0
     }
   });
 
@@ -32,7 +25,13 @@ bot.on('ready', () => {
 
 bot.on('message', message => {
   // leave the message to the interpreter
-  interpreter.read(message);
+  for (let interpreter of interpreters) {
+    const isMessageInterpreted = interpreter.read(message);
+
+    if (isMessageInterpreted) {
+      break;
+    }
+  }
 });
 
 bot.login(config.token);

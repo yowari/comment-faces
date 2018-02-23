@@ -1,9 +1,9 @@
 import { Message } from 'discord.js';
-import { Command } from '../interpreter';
+import { Command } from '../interpreters';
 
 class Help implements Command {
 
-  execute (msg: Message, args: string[]): void {
+  execute (msg: Message, _args: string[]): void {
     msg.channel.send('', {
       embed: {
         color: 0xF9690E,
@@ -12,7 +12,7 @@ class Help implements Command {
         fields: [
           {
             name: 'Comment faces r/animes wiki page',
-            value: '[https://www.reddit.com/r/anime/wiki/commentfaces](https://www.youtube.com/watch?v=mLUjwZBPzR0)',
+            value: '[https://www.reddit.com/r/anime/wiki/commentfaces](https://www.youtube.com/watch?v=HY03ilJnBZc)',
           },
           {
             name: 'How to (copied from r/animes wiki page)',
@@ -26,7 +26,7 @@ class Help implements Command {
           }
         ],
         footer: {
-          text: '2017 | made with ♥️ by yowari'
+          text: '2018 | made with ♥️ by yowari'
         }
       }
     });

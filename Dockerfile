@@ -1,6 +1,6 @@
 FROM centos
 
-MAINTAINER yowari
+LABEL maintainer=yowari
 
 RUN curl --silent --location https://rpm.nodesource.com/setup_9.x | bash - \
   && yum -y install nodejs gcc-c++ make wget

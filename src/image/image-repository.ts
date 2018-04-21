@@ -1,6 +1,5 @@
-import { ImageBuilder } from './builder';
-//const Gm = require('gm');
-import { ImageMetaExtractor } from './extractor';
+import { ImageBuilder } from './image-builder';
+import { ImageMetaExtractor } from './image-extractor';
 
 class ImageRepository {
 

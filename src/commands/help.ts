@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
-import { Command } from '../interpreters';
+import { Command } from './command';
 
-class Help implements Command {
+export class Help implements Command {
 
   execute (msg: Message, _args: string[]): void {
     msg.channel.send('', {
@@ -33,5 +33,3 @@ class Help implements Command {
   }
 
 }
-
-export default Help;

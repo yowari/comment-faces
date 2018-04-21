@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 import { Interpreter } from './interpreter';
-import { ImageRepository } from '../image/repository';
+import { ImageRepository } from '../image/image-repository';
 
 interface FaceCodeExpr {
   textOnTop: string;
@@ -8,19 +8,19 @@ interface FaceCodeExpr {
   hoverText: string;
 }
 
-class CommentFaceInterpreter implements Interpreter {
+export class FaceCodeInterpreter implements Interpreter {
 
-  imgRepository: ImageRepository;
+  imageRepository: ImageRepository;
 
   constructor(public config: any) {
-    this.imgRepository = new ImageRepository(config.tmp);
+    this.imageRepository = new ImageRepository(config.tmp);
   }
 
   read(msg: Message): boolean {
     const expr: FaceCodeExpr | null = this.parse(msg.content);
 
     if (expr != null) {
-      this.imgRepository.getImage(expr.faceCode, expr.textOnTop)
+      this.imageRepository.getImage(expr.faceCode, expr.textOnTop)
         .then(imageFile => {
           if (imageFile != null) {
             msg.channel.send('', {
@@ -61,5 +61,3 @@ class CommentFaceInterpreter implements Interpreter {
   }
 
 }
-
-export { CommentFaceInterpreter };

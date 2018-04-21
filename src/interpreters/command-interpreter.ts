@@ -1,12 +1,9 @@
 import { Message } from 'discord.js';
 import { Interpreter } from './interpreter';
-import Help from '../commands/help';
+import { Command } from '../commands/command';
+import { Help } from '../commands/help';
 
-interface Command {
-  execute(msg: Message, args: string[]): void;
-}
-
-class CommandInterpreter implements Interpreter {
+export class CommandInterpreter implements Interpreter {
 
   commands: { [name: string]: Command };
 
@@ -34,5 +31,3 @@ class CommandInterpreter implements Interpreter {
   }
 
 }
-
-export { Command, CommandInterpreter };

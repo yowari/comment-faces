@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 // TypeScript Definition error when using Gm() and gm.in() in lines 125 and 128
 import Gm from 'gm';
-import { ImageMeta } from './extractor';
+import { ImageMeta } from './image-extractor';
 
 const TOP_POSITION = 20;
 const FONT = __dirname + '/../../../font/Anton/Anton-Regular.ttf';
@@ -108,6 +108,7 @@ class ImageBuilder {
     gm.repage("+");
 
     for (let frame of frames) {
+      // Perhaps this should be fixed in @types/gm
       // @ts-ignore
       gm = gm.in(frame);
     }

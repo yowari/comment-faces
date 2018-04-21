@@ -1,5 +1,7 @@
 import { Client } from 'discord.js';
-import { Interpreter, CommandInterpreter, CommentFaceInterpreter } from './interpreters';
+import { Interpreter } from './interpreters/interpreter';
+import { FaceCodeInterpreter } from './interpreters/facecode-interpreter';
+import { CommandInterpreter } from './interpreters/command-interpreter';
 
 import config from './config';
 
@@ -8,7 +10,7 @@ const bot = new Client();
 // create interpreters
 const interpreters: Interpreter[] = [
   new CommandInterpreter(config),
-  new CommentFaceInterpreter(config),
+  new FaceCodeInterpreter(config),
 ];
 
 bot.on('ready', () => {

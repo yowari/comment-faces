@@ -86,6 +86,10 @@ function parseRedditPage(faceId: string) {
         var stylesheet = document.styleSheets[i];
         var xhr = new XMLHttpRequest();
 
+        if (stylesheet.href === null) {
+          throw new Error('Cannot retrieve image URL');
+        }
+
         xhr.open('GET', stylesheet.href, false);
 
         try {

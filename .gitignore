@@ -1,6 +1,7 @@
 # Faces data directories
-faces/
+tmp/
 dist/
+ranimes/
 
 # Dependency directories
 node_modules/

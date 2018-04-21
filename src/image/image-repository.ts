@@ -6,7 +6,8 @@ class ImageRepository {
   metaExtractor : ImageMetaExtractor;
 
   constructor(public faceFolder: string) {
-    this.metaExtractor = new ImageMetaExtractor('./ranimes/commentfaces - anime.html');
+    const url = './ranimes/www.reddit.com/r/anime/wiki/commentfaces.html';
+    this.metaExtractor = new ImageMetaExtractor(url);
   }
 
   async getImage(faceCode: string, textOnTop: string): Promise<string> {

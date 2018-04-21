@@ -1,6 +1,7 @@
 # Faces data directories
-faces/
-js/
+tmp/
+dist/
+ranimes/
 
 # Source control directory
 .git

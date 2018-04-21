@@ -28,6 +28,9 @@ WORKDIR /opt/app-root
 RUN yarn install \
   && yarn run build
 
+RUN wget -E -H -p -k -e robots=off -P ranimes https://www.reddit.com/r/anime/wiki/commentfaces \
+  && sed -i .bak 's/href="commentfaces.html#/href="#/g' ranimes/www.reddit.com/r/anime/wiki/commentfaces.html
+
 RUN chmod -R 777 /opt/app-root \
   && chown -R 1001:1001 /opt/app-root
 

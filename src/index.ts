@@ -1,7 +1,7 @@
 import { Client } from 'discord.js';
-import { Interpreter, CommandInterpreter, CommentFaceInterpreter } from './src/interpreters';
+import { Interpreter, CommandInterpreter, CommentFaceInterpreter } from './interpreters';
 
-import config from './src/config';
+import config from './config';
 
 const bot = new Client();
 

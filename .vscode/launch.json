@@ -8,15 +8,15 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceRoot}/index.ts",
-            "env": {
-                "NODE_ENV": "development"
-            },
+            "program": "${workspaceRoot}/src/index.ts",
             "console": "internalConsole",
             "sourceMaps": true,
             "outFiles": [
-                "${workspaceRoot}/js/**/*"
-            ]
+              "${workspaceFolder}/**/*.js"
+            ],
+            "env": {
+                "NODE_ENV": "development"
+            }
         },
         {
             "type": "node",

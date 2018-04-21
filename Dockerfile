@@ -26,7 +26,7 @@ COPY . /opt/app-root
 WORKDIR /opt/app-root
 
 RUN yarn install \
-  && yarn run compile
+  && yarn run build
 
 RUN chmod -R 777 /opt/app-root \
   && chown -R 1001:1001 /opt/app-root

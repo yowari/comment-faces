@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 // TypeScript Definition error when using Gm() and gm.in() in lines 125 and 128
-import * as Gm from 'gm';
+import Gm from 'gm';
 import { ImageMeta } from './extractor';
 
 const TOP_POSITION = 20;

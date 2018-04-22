@@ -1,12 +1,14 @@
 # comment-faces
 
-[![Docker Automated build][s1]][dc] [![Get the bot][s2]][bo]
+[![Docker Automated build][s1]][dc] [![Get the bot][s2]][bo] [![license][s3]][li]
 
 [s1]: https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg
 [s2]: https://img.shields.io/badge/Discord-Add%20to%20your%20server-blue.svg
+[s3]: https://img.shields.io/badge/license-MIT-green.svg
 
 [dc]: https://hub.docker.com/r/yowari/comment-faces/
 [bo]: https://discordapp.com/oauth2/authorize?client_id=307244970451009538&scope=bot
+[li]: LICENSE
 
 **comment-faces** is a Discord bot whose primary function is to
 generate comment faces based on [r/Animes][ra].

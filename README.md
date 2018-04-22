@@ -56,13 +56,21 @@ you have to set an environement variable holding the token named `TOKEN`.
 
 #### Local
 
-You can use yarn or npm (even if yarn is better because it uses more colors and
-has emoji :sparkles:):
+First, download the r/Animes wiki page in a folder named `ranimes`. Make sure
+`wget` and `sed` are installed.
 
 ```
-yarn install
-yarn run compile
-ENV TOKEN=YOUR_DISCORD_TOKEN yarn start
+$ wget -E -H -p -k -e robots=off -P ranimes https://www.reddit.com/r/anime/wiki/commentfaces
+$ sed -i'.bak' 's/href="commentfaces.html#/href="#/g' ranimes/www.reddit.com/r/anime/wiki/commentfaces.html
+```
+
+Then, you can use yarn or npm (even if yarn is better because it uses more
+colors and has emoji :sparkles:) to install dependencies and run the bot:
+
+```
+$ yarn install
+$ yarn run compile
+$ ENV TOKEN=YOUR_DISCORD_TOKEN yarn start
 ```
 
 #### Using Docker
@@ -73,6 +81,6 @@ deployed on `OpenShift`.
 Note: No need to build the image, you can directly pull it.
 
 ```
-docker pull yowari/comment-faces
-docker run -d -e TOKEN=YOUR_DISCORD_TOKEN yowari/comment-faces
+$ docker pull yowari/comment-faces
+$ docker run -d -e TOKEN=YOUR_DISCORD_TOKEN yowari/comment-faces
 ```

@@ -2,9 +2,12 @@
 tmp/
 dist/
 ranimes/
+faces-out/
 
 # Dependency directories
 node_modules/
 
 # Optional npm cache directory
 .npm
+
+.env

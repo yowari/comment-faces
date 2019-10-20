@@ -1,0 +1,17 @@
+{
+  "name": "@comment-faces/bot",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc -p tsconfig.json",
+    "start": "node ./dist/main.js",
+    "lint": "tslint --project ."
+  },
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "dotenv": "^8.1.0"
+  },
+  "devDependencies": {}
+}

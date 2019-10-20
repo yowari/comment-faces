@@ -1,10 +1,11 @@
 import { Message } from 'discord.js';
+
 import { Command } from './command';
 
-export class Help implements Command {
+export class HelpCommand implements Command {
 
-  execute (msg: Message, _args: string[]): void {
-    msg.channel.send('', {
+  execute(message: Message, _args: string[]): void {
+    message.channel.send('', {
       embed: {
         color: 0xF9690E,
         title: 'Description',
@@ -12,7 +13,7 @@ export class Help implements Command {
         fields: [
           {
             name: 'Comment faces r/animes wiki page',
-            value: '[https://www.reddit.com/r/anime/wiki/commentfaces](https://www.youtube.com/watch?v=HY03ilJnBZc)',
+            value: '[https://www.reddit.com/r/anime/wiki/commentfaces](https://www.youtube.com/watch?v=HY03ilJnBZc)'
           },
           {
             name: 'How to (copied from r/animes wiki page)',
@@ -21,12 +22,12 @@ export class Help implements Command {
 '- The basic format to use is `[](#face-code)` (the face code is listed next to each face below)',
 '- You can also add hover text: `[](#face-code "Hover text")`',
 '- The faces also support adding text to the image: `[Text on top](...)` or `[**Text on bottom**](...)` (or both!)',
-'- Animated faces are animated when you hover over them with your cursor',
-            ].join('\n'),
+'- Animated faces are animated when you hover over them with your cursor'
+            ].join('\n')
           }
         ],
         footer: {
-          text: '2018 | made with ♥️ by yowari'
+          text: '2019 | made with ♥️ by yowari'
         }
       }
     });

@@ -1,0 +1,16 @@
+{
+  "name": "@comment-faces/builder",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "gm": "^1.23.1"
+  },
+  "devDependencies": {
+    "@types/gm": "^1.18.4"
+  }
+}

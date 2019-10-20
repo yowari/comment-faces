@@ -7,22 +7,10 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceRoot}/src/client.ts",
-            "console": "internalConsole",
-            "sourceMaps": true,
-            "outFiles": [
-              "${workspaceFolder}/**/*.js"
-            ],
-            "env": {
-                "NODE_ENV": "development"
-            }
-        },
-        {
-            "type": "node",
-            "request": "attach",
-            "name": "Attach",
-            "port": 5858
+            "name": "Launch Bot",
+            "program": "${workspaceFolder}/packages/bot/src/main.ts",
+            "preLaunchTask": "tsc: watch - packages/bot/tsconfig.json",
+            "outFiles": ["${workspaceFolder}/packages/bot/dist/**/*.js"]
         }
     ]
 }

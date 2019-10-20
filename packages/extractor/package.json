@@ -1,0 +1,21 @@
+{
+  "name": "@comment-faces/extractor",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "cfe": "dist/bin/main.js"
+  },
+  "license": "MIT",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "commander": "^3.0.2",
+    "puppeteer": "^1.19.0"
+  },
+  "devDependencies": {
+    "@types/puppeteer": "^1.19.1"
+  }
+}

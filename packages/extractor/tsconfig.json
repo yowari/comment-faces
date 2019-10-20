@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "outDir": "./dist",
+  },
+  "files": [
+    "src/lib/index.ts",
+    "src/bin/main.ts"
+  ]
+}

@@ -7,6 +7,15 @@
         "type": "npm",
         "script": "build",
         "problemMatcher": []
+      },
+      {
+        "type": "typescript",
+        "tsconfig": "packages/bot/tsconfig.json",
+        "option": "watch",
+        "problemMatcher": [
+          "$tsc-watch"
+        ],
+        "group": "build"
       }
     ]
 }

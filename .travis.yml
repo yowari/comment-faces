@@ -6,6 +6,12 @@ branches:
   only:
   - develop
 
+dist: bionic
+addons:
+  apt:
+    packages:
+      graphicsmagick
+
 script:
   - yarn workspaces run build
   - yarn workspace @comment-faces/bot download-reddit-page

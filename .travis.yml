@@ -14,3 +14,5 @@ script:
 deploy:
   provider: script
   script: yarn deploy
+  on:
+    branch: develop

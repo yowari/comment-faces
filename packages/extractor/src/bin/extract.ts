@@ -37,7 +37,7 @@ export async function extractImages(options: Options) {
         .then(() => fs.writeFileSync(
           path.resolve(options.faceFolder, face.faceCode + '.json'),
           JSON.stringify(face, null, 2)))
-        .catch(() => console.error(`cannot save "${face.faceCode}"`));
+        .catch((e) => console.error(`cannot save "${face.faceCode}": `, JSON.stringify(e, null, 2)));
     })
   );
 }

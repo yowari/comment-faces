@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Command } from 'commander';
 import path from 'path';
 
@@ -16,7 +18,7 @@ const localUrl = 'file://' + path.resolve(
 
 const externalUrl = 'https://old.reddit.com/r/anime/wiki/commentfaces';
 
-const defaultFaceFolder = './face-out';
+const defaultFaceFolder = './faces-out';
 
 const defaultPageFolder = './ranimes';
 

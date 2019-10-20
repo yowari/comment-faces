@@ -6,6 +6,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.json",
+    "download-reddit-page": "node ../../node_modules/@comment-faces/extractor/dist/bin/main.js download-page",
+    "extract-comment-faces": "node ../../node_modules/@comment-faces/extractor/dist/bin/main.js extract",
     "start": "node ./dist/main.js",
     "lint": "tslint --project ."
   },

@@ -1,0 +1,14 @@
+language: node_js
+
+branches:
+  only:
+  - develop
+
+script:
+  - yarn workspaces run build
+  - yarn workspaces @comment-faces/bot download-reddit-page
+  - yarn workspaces @comment-faces/bot extract-comment-faces
+
+deploy:
+  provider: script
+  script: yarn deploy

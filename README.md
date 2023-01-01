@@ -38,7 +38,7 @@ of the image to be used. Example:
 You can run comment-faces either locally with NodeJS or using a container with
 Docker.
 
-Before starting the bot, you have to create a discord bot. To do so, go to [https://discord.com/developers/applications]
+Before starting the bot, you have to create a discord bot. To do so, go to [Discord developer page](https://discord.com/developers/applications)
 and create one using `New Application` button. Once done,
 you have to set an environement variables `TOKEN` and `CLIENT_ID` holding the bot token and clientId respectively.
 
@@ -50,7 +50,7 @@ Before launching any command, you need to install the node dependencies:
 npm install
 ```
 
-First, You need to fetch images list from (r/animes comment faces repository)[https://github.com/r-anime/comment-face-assets]:
+First, You need to fetch images list from [r/animes comment faces repository](https://github.com/r-anime/comment-face-assets):
 
 ```
 npm run fetch-images

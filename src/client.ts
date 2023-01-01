@@ -1,39 +1,29 @@
-import { Client } from 'discord.js';
-import { Interpreter } from './interpreters/interpreter';
-import { FaceCodeInterpreter } from './interpreters/facecode-interpreter';
-import { CommandInterpreter } from './interpreters/command-interpreter';
+import dotenv from 'dotenv';
+import { Client, Events, GatewayIntentBits } from 'discord.js';
+
+dotenv.config();
 
 import config from './config';
+import { execAutocomplete, execCommand } from './interaction';
 
-const bot = new Client();
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-// create interpreters
-const interpreters: Interpreter[] = [
-  new CommandInterpreter(config),
-  new FaceCodeInterpreter(config),
-];
-
-bot.on('ready', () => {
+client.once(Events.ClientReady, (c) => {
   // set bot status message
-  bot.user.setPresence({
-    game: {
-      name: `${config.prefix}help`,
-    }
+  c.user.setPresence({
+    activities: [{ name: '/comment-faces <face-id>' }]
   });
 
   // MY BOTY IS READY
   console.log('comment-faces bot ready');
 });
 
-bot.on('message', message => {
-  // leave the message to the interpreter
-  for (let interpreter of interpreters) {
-    const isMessageInterpreted = interpreter.read(message);
-
-    if (isMessageInterpreted) {
-      break;
-    }
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (interaction.isChatInputCommand()) {
+    execCommand(interaction);
+  } else if (interaction.isAutocomplete()) {
+    execAutocomplete(interaction)
   }
 });
 
-bot.login(config.token);
+client.login(config.token);
